@@ -13,7 +13,7 @@ void SetWindowIcon() {
     UnloadImage(windowIcon);  // safe to unload as GPU now handles the image
 }
 
-void UpdateStylusPosition(Vector2& stylusPos, const float& dt) {
+void UpdateStylusPosition(Vector2& stylusPos, const float& dt, const bool& isControlKeyDown) {
     const float dPos = stylusMovementSpeed * dt;
     if (IsKeyDown(key_right_1) || IsKeyDown(key_right_2)) {
         stylusPos.x += dPos;
@@ -28,7 +28,7 @@ void UpdateStylusPosition(Vector2& stylusPos, const float& dt) {
             stylusPos.x = 0 + stylusRadius;
         }
     }
-    if (IsKeyDown(key_down_1) || IsKeyDown(key_down_2)) {
+    if (!isControlKeyDown && (IsKeyDown(key_down_1) || IsKeyDown(key_down_2))) {
         stylusPos.y += dPos;
         constexpr unsigned int maxPosY = canvasHeight - stylusRadius;
         if (stylusPos.y > maxPosY) {
@@ -118,7 +118,7 @@ int main() {
 
         if (erasureShakeTimer <= 0.0f) {
             const Vector2 prevStylusPos = stylusPos;
-            UpdateStylusPosition(stylusPos, dt);
+            UpdateStylusPosition(stylusPos, dt, isControlKeyDown);
             if (HasPositionChanged(prevStylusPos, stylusPos)) {
                 BeginTextureMode(canvas);
                 DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, lineColor);
