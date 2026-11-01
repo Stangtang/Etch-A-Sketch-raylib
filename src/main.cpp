@@ -1,4 +1,7 @@
+#include <chrono>
 #include <cmath>
+#include <exception>
+#include <future>
 
 #include "constants.h"
 #include "raylib.h"
@@ -118,6 +121,7 @@ int main() {
         MakeDirectory(screenshotFolder.c_str());
     }
     unsigned int screenshotNumber = 1;
+    std::future<bool> screenshotSave;
     float saveNoticeTimer = 0.0f;
     float saveNoticeProgress = 0.0f;
     // calculate save message constants after window is loaded
@@ -128,6 +132,14 @@ int main() {
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
         const bool isControlKeyDown = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL);
+
+        if (screenshotSave.valid() && screenshotSave.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            if (screenshotSave.get()) {
+                saveNoticeTimer = saveNoticeDuration;
+            } else {
+                TraceLog(LOG_WARNING, "Screenshot could not be saved.");
+            }
+        }
 
         if (erasureShakeTimer <= 0.0f) {
             const Vector2 prevStylusPos = stylusPos;
@@ -163,14 +175,24 @@ int main() {
             }
         }
 
-        if (isControlKeyDown && IsKeyPressed(key_save_withControlDown)) {
-            Image screenshot = LoadImageFromScreen();
+        if (isControlKeyDown && IsKeyPressed(key_save_withControlDown) && !screenshotSave.valid()) {
             const std::string screenshotPath =
                 screenshotFolder + '/' + screenshotName + std::to_string(screenshotNumber++) + ".png";
-            ExportImage(screenshot, screenshotPath.c_str());
-            UnloadImage(screenshot);
-
-            saveNoticeTimer = saveNoticeDuration;
+            Image screenshot = LoadImageFromScreen();
+            if (screenshot.data == nullptr) {
+                TraceLog(LOG_WARNING, "Screenshot could not be captured.");
+            } else {
+                try {
+                    screenshotSave = std::async(std::launch::async, [screenshot, screenshotPath]() {
+                        const bool saved = ExportImage(screenshot, screenshotPath.c_str());
+                        UnloadImage(screenshot);
+                        return saved;
+                    });
+                } catch (const std::exception& error) {
+                    UnloadImage(screenshot);
+                    TraceLog(LOG_WARNING, "Could not start screenshot save: %s", error.what());
+                }
+            }
         }
         if (saveNoticeTimer > 0.0f) {
             saveNoticeProgress = 1.0f - saveNoticeTimer / saveNoticeDuration;
@@ -197,6 +219,11 @@ int main() {
         }
 
         EndDrawing();
+    }
+
+    // finish last write before exiting
+    if (screenshotSave.valid() && !screenshotSave.get()) {
+        TraceLog(LOG_WARNING, "Screenshot could not be saved.");
     }
 
     UnloadRenderTexture(canvas);
