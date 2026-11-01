@@ -10,6 +10,9 @@
 Etch-A-Sketch-raylib.make
 raylib.make
 
+# Clang
+.clang-tidy
+
 # User-specific files
 *.rsuser
 *.suo
