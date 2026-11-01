@@ -18,9 +18,17 @@ constexpr Color canvasColor = LIGHTGRAY;
 // stylus constants
 constexpr unsigned int stylusStartingX = canvasWidth / 2.0f;
 constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;
-constexpr float stylusRadius = 10.0f;      // big for testing purposes
-const float stylusMovementSpeed = 500.0f;  // fast for testing purposes
+constexpr float stylusRadius = 10.0f;          // big for testing purposes
+constexpr float stylusMovementSpeed = 500.0f;  // fast for testing purposes
 constexpr Color stylusColor = BLACK;
+
+// knob constants
+const Vector2 leftKnobCenter{185, 650};
+const Vector2 rightKnobCenter{915, 650};
+constexpr float knobOuterRadius = 50.0f;
+constexpr float knobInnerRadius = 0.85f * knobOuterRadius;
+constexpr Color knobInnerColor{246, 239, 213, 255};
+const Color knobOuterColor = ColorBrightness(knobInnerColor, -0.25f);
 
 // control constants
 constexpr int key_right_1 = KeyboardKey::KEY_RIGHT;
