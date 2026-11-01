@@ -71,16 +71,21 @@ void DrawKnob(const Vector2& knobCenter, const float& rotation, const Vector2& s
     DrawCircle(offsetKnobX, offsetKnobY, knobOuterRadius, knobOuterColor);
     DrawCircle(offsetKnobX, offsetKnobY, knobInnerRadius, knobInnerColor);
 
-    Vector2 rotationMarkerEnd{offsetKnobX + knobRotationMarkerDrawnLength * std::cos(rotation),
-                              offsetKnobY + knobRotationMarkerDrawnLength * std::sin(rotation)};
-    DrawLineEx({offsetKnobX, offsetKnobY}, rotationMarkerEnd, knobRotationMarkerThickness, knobRotationMarkerColor);
+    Vector2 rotationMarkerEndPos{offsetKnobX + knobRotationMarkerDrawnLength * std::cos(rotation),
+                                 offsetKnobY + knobRotationMarkerDrawnLength * std::sin(rotation)};
+    DrawLineEx({offsetKnobX, offsetKnobY}, rotationMarkerEndPos, knobRotationMarkerThickness, knobRotationMarkerColor);
 
     DrawCircle(offsetKnobX, offsetKnobY, knobRotationMarkerCoveredLength, knobInnerColor);
 
-    DrawCircleV(rotationMarkerEnd, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
-    Vector2 rotationMarkerStart{offsetKnobX + knobRotationMarkerCoveredLength * std::cos(rotation),
-                                offsetKnobY + knobRotationMarkerCoveredLength * std::sin(rotation)};
-    DrawCircleV(rotationMarkerStart, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
+    DrawCircleV(rotationMarkerEndPos, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
+    Vector2 rotationMarkerStartPos{offsetKnobX + knobRotationMarkerCoveredLength * std::cos(rotation),
+                                   offsetKnobY + knobRotationMarkerCoveredLength * std::sin(rotation)};
+    DrawCircleV(rotationMarkerStartPos, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
+}
+
+void DrawKnobs(const Vector2& knobRotations, const Vector2& shakeOffsets) {
+    DrawKnob(leftKnobCenter, knobRotations.x, shakeOffsets);
+    DrawKnob(rightKnobCenter, knobRotations.y, shakeOffsets);
 }
 
 int main() {
@@ -150,8 +155,7 @@ int main() {
 
         DrawStylus(stylusPos, shakeOffsets);
 
-        DrawKnob(leftKnobCenter, knobRotations.x, shakeOffsets);
-        DrawKnob(rightKnobCenter, knobRotations.y, shakeOffsets);
+        DrawKnobs(knobRotations, shakeOffsets);
 
         EndDrawing();
     }
