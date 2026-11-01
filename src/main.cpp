@@ -59,6 +59,7 @@ int main() {
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
     BeginTextureMode(canvas);
     ClearBackground(canvasColor);
+    DrawCircleV(stylusPos, stylusRadius, stylusColor);
     EndTextureMode();
 
     while (!WindowShouldClose()) {
@@ -69,7 +70,8 @@ int main() {
 
         if (HasPositionChanged(prevStylusPos, stylusPos)) {
             BeginTextureMode(canvas);
-            DrawLineEx(prevStylusPos, stylusPos, stylusRadius, stylusColor);
+            DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, stylusColor);
+            DrawCircleV(prevStylusPos, stylusRadius, stylusColor);
             EndTextureMode();
         }
 
