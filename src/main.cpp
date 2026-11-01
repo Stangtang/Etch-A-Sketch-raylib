@@ -55,8 +55,9 @@ void ClearCanvas(const RenderTexture2D& canvas) {
 
 void DrawCanvas(const RenderTexture2D& canvas, const Vector2& shakeOffsets, const float& erasureProgress) {
     DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
-                   {static_cast<float>(canvasX) + shakeOffsets.x, static_cast<float>(canvasY) + shakeOffsets.y}, WHITE);
-    DrawRectangle(canvasX, canvasY, canvasWidth, canvasHeight, Fade(canvasColor, erasureProgress));
+                   {canvasX + shakeOffsets.x, canvasY + shakeOffsets.y}, WHITE);
+    DrawRectangle(canvasX + shakeOffsets.x, canvasY + shakeOffsets.y, canvasWidth, canvasHeight,
+                  Fade(canvasColor, erasureProgress));
 }
 
 void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
@@ -129,6 +130,8 @@ int main() {
             erasureShakeTimer -= dt;
             if (erasureShakeTimer <= 0.0f) {
                 erasureShakeTimer = 0.0f;
+                erasureProgress = 0.0f;
+                shakeOffsets = {0.0f, 0.0f};
                 ClearCanvas(canvas);
             }
         }
