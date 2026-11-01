@@ -89,8 +89,7 @@ void DrawKnobs(const Vector2& knobRotations, const Vector2& shakeOffsets) {
 }
 
 int main() {
-    // SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-    SetConfigFlags(FLAG_VSYNC_HINT);
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
     SetTargetFPS(60);
     SearchAndSetResourceDir("resources");
@@ -147,7 +146,9 @@ int main() {
         }
 
         if (isControlKeyDown && IsKeyPressed(key_save_withControlDown)) {
-            TakeScreenshot("etch-a-sketch.png");
+            Image screenshot = LoadImageFromScreen();
+            ExportImage(screenshot, "etch-a-sketch.png");
+            UnloadImage(screenshot);
         }
 
         BeginDrawing();
