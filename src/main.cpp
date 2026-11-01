@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "constants.h"
 #include "raylib.h"
 #include "resource_dir.h"
@@ -51,14 +53,29 @@ void ClearCanvas(const RenderTexture2D& canvas) {
     EndTextureMode();
 }
 
-void DrawKnob(const Vector2& center) {
-    DrawCircleV(center, knobOuterRadius, knobOuterColor);
-    DrawCircleV(center, knobInnerRadius, knobInnerColor);
+void DrawCanvas(const RenderTexture2D& canvas) {
+    DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
+                   {static_cast<float>(canvasX), static_cast<float>(canvasY)}, WHITE);
 }
 
-void DrawKnobs() {
-    DrawKnob(leftKnobCenter);
-    DrawKnob(rightKnobCenter);
+void DrawStylus(const Vector2& stylusPos) {
+    DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
+}
+
+void DrawKnob(const Vector2& knobCenter, const float& rotation) {
+    DrawCircleV(knobCenter, knobOuterRadius, knobOuterColor);
+    DrawCircleV(knobCenter, knobInnerRadius, knobInnerColor);
+
+    Vector2 rotationMarkerEnd{knobCenter.x + knobRotationMarkerDrawnLength * std::cos(rotation),
+                              knobCenter.y + knobRotationMarkerDrawnLength * std::sin(rotation)};
+    DrawLineEx(knobCenter, rotationMarkerEnd, knobRotationMarkerThickness, knobRotationMarkerColor);
+
+    DrawCircleV(knobCenter, knobRotationMarkerCoveredLength, knobInnerColor);
+
+    DrawCircleV(rotationMarkerEnd, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
+    Vector2 rotationMarkerStart{knobCenter.x + knobRotationMarkerCoveredLength * std::cos(rotation),
+                                knobCenter.y + knobRotationMarkerCoveredLength * std::sin(rotation)};
+    DrawCircleV(rotationMarkerStart, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
 }
 
 int main() {
@@ -95,14 +112,12 @@ int main() {
 
         ClearBackground(backgroundColor);
 
-        // draw canvas
-        DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
-                       {static_cast<float>(canvasX), static_cast<float>(canvasY)}, WHITE);
+        DrawCanvas(canvas);
 
-        // draw stylus
-        DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
+        DrawStylus(stylusPos);
 
-        DrawKnobs();
+        DrawKnob(leftKnobCenter, knobRotations.xRotation);
+        DrawKnob(rightKnobCenter, knobRotations.yRotation);
 
         EndDrawing();
     }
