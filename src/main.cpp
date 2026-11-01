@@ -67,8 +67,12 @@ int main() {
         BeginDrawing();
 
         ClearBackground(backgroundColor);
+
+        // draw canvas
         DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
                        {static_cast<float>(canvasX), static_cast<float>(canvasY)}, WHITE);
+
+        // draw stylus
         DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
 
         EndDrawing();
