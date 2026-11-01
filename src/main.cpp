@@ -41,6 +41,10 @@ void UpdateStylusPosition(Vector2& stylusPos, const float& dt) {
     }
 }
 
+bool HasPositionChanged(Vector2 prevPos, Vector2 currPos) {
+    return (prevPos.x != currPos.x) || (prevPos.y != currPos.y);
+}
+
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
@@ -53,16 +57,21 @@ int main() {
                       stylusStartingX, stylusStartingY};
 
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
+    BeginTextureMode(canvas);
+    ClearBackground(canvasColor);
+    EndTextureMode();
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
 
+        const Vector2 prevStylusPos = stylusPos;
         UpdateStylusPosition(stylusPos, dt);
 
-        BeginTextureMode(canvas);
-        ClearBackground(canvasColor);
-        DrawCircle(30, 30, 10, BLACK);
-        EndTextureMode();
+        if (HasPositionChanged(prevStylusPos, stylusPos)) {
+            BeginTextureMode(canvas);
+            DrawLineEx(prevStylusPos, stylusPos, stylusRadius, stylusColor);
+            EndTextureMode();
+        }
 
         BeginDrawing();
 
