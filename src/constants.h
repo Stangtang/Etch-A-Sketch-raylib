@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "raylib.h"
 
 // math
@@ -61,3 +63,7 @@ constexpr int key_up_1 = KeyboardKey::KEY_UP;
 constexpr int key_up_2 = KeyboardKey::KEY_W;
 constexpr int key_clear = KeyboardKey::KEY_SPACE;
 constexpr int key_save_withControlDown = KeyboardKey::KEY_S;
+
+// screenshot
+const std::string screenshotFolder = std::string(GetApplicationDirectory()) + "screenshots";
+constexpr std::string screenshotName = "screenshot";

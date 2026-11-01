@@ -107,6 +107,11 @@ int main() {
     float erasureProgress = 0.0f;
     Vector2 shakeOffsets{0.0f, 0.0f};
 
+    unsigned int screenshotNumber = 1;
+    if (!DirectoryExists(screenshotFolder.c_str())) {
+        MakeDirectory(screenshotFolder.c_str());
+    }
+
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
         const bool isControlKeyDown = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL);
@@ -147,7 +152,9 @@ int main() {
 
         if (isControlKeyDown && IsKeyPressed(key_save_withControlDown)) {
             Image screenshot = LoadImageFromScreen();
-            ExportImage(screenshot, "etch-a-sketch.png");
+            const std::string screenshotPath =
+                screenshotFolder + '/' + screenshotName + std::to_string(screenshotNumber++) + ".png";
+            ExportImage(screenshot, screenshotPath.c_str());
             UnloadImage(screenshot);
         }
 
