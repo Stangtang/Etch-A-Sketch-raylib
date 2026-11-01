@@ -19,9 +19,10 @@ constexpr Color canvasColor = LIGHTGRAY;
 // stylus constants
 constexpr unsigned int stylusStartingX = canvasWidth / 2.0f;
 constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;
-constexpr float stylusRadius = 10.0f;          // big for testing purposes
-constexpr float stylusMovementSpeed = 500.0f;  // fast for testing purposes
-constexpr Color stylusColor = BLACK;
+constexpr float stylusRadius = 2.0f;           // big for testing purposes
+constexpr float stylusMovementSpeed = 180.0f;  // fast for testing purposes
+constexpr Color stylusColor = DARKGRAY;
+constexpr Color lineColor = BLACK;
 
 // knob constants
 constexpr unsigned int knobBottomPadding = (windowHeight - canvasHeight - canvasY) / 2;
@@ -31,8 +32,18 @@ const Vector2 leftKnobCenter{knobLeftRightPadding, knobY};
 const Vector2 rightKnobCenter{windowWidth - knobLeftRightPadding, knobY};
 constexpr float knobOuterRadius = 50.0f;
 constexpr float knobInnerRadius = 0.85f * knobOuterRadius;
+constexpr float knobRotationSpeed = 0.035f;
+constexpr float knobRotationMarkerDrawnLength = knobInnerRadius * 0.75f;
+constexpr float knobRotationMarkerCoveredLength = knobRotationMarkerDrawnLength * 0.30f;
+static_assert(knobRotationMarkerDrawnLength > knobRotationMarkerCoveredLength, "Rotation knob must be visible!");
+constexpr float knobRotationMarkerThickness = 5.0f;
 constexpr Color knobInnerColor{246, 239, 213, 255};
 const Color knobOuterColor = ColorBrightness(knobInnerColor, -0.25f);
+constexpr Color knobRotationMarkerColor = DARKGRAY;
+struct KnobRotations {
+    float xRotation;
+    float yRotation;
+};
 
 // control constants
 constexpr int key_right_1 = KeyboardKey::KEY_RIGHT;
