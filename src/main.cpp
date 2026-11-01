@@ -101,8 +101,8 @@ int main() {
         UpdateStylusPosition(stylusPos, dt);
         if (HasPositionChanged(prevStylusPos, stylusPos)) {
             BeginTextureMode(canvas);
-            DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, stylusColor);
-            DrawCircleV(prevStylusPos, stylusRadius, stylusColor);
+            DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, lineColor);
+            DrawCircleV(prevStylusPos, stylusRadius, lineColor);
             EndTextureMode();
 
             knobRotations.xRotation += (stylusPos.x - prevStylusPos.x) * knobRotationSpeed;
