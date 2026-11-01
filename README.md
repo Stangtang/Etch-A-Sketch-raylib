@@ -30,7 +30,7 @@ Controls/Help menu coming soon
 * You are good to go
 <!--
 add flag `--cc=clang` if using using clang?
-`.\premake5 --cc=clang gmake`
+`.\premake5.osx --cc=clang gmake`
 -->
 
 # Output files
