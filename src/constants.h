@@ -45,10 +45,6 @@ constexpr float knobRotationMarkerThickness = 5.0f;
 constexpr Color knobInnerColor{246, 239, 213, 255};
 const Color knobOuterColor = ColorBrightness(knobInnerColor, -0.25f);
 constexpr Color knobRotationMarkerColor = DARKGRAY;
-struct KnobRotations {
-    float xRotation;
-    float yRotation;
-};
 
 // control
 constexpr int key_right_1 = KeyboardKey::KEY_RIGHT;
