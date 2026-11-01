@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "raylib.h"
 #include "resource_dir.h"
 
@@ -12,8 +13,6 @@ void SetWindowIcon() {
 
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-    constexpr int windowWidth = 1100;
-    constexpr int windowHeight = 760;
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
     SetTargetFPS(60);
     SearchAndSetResourceDir("resources");
@@ -24,7 +23,7 @@ int main() {
         BeginDrawing();
 
         ClearBackground(WHITE);
-        DrawText("hello, world", 200, 200, 50, BLACK);
+        DrawRectangle(canvasX, canvasY, canvasWidth, canvasHeight, LIGHTGRAY);
 
         EndDrawing();
     }
