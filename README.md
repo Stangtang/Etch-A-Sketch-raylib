@@ -1,6 +1,6 @@
 # Etch-A-Sketch
 
-Etch-A-Sketch made with raylib
+Etch-A-Sketch made with raylib and C++
 
 Controls/Help menu coming soon
 
