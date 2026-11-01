@@ -92,6 +92,8 @@ int main() {
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
     ClearCanvas(canvas);
 
+    KnobRotations knobRotations{0.0f, 0.0f};
+
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
 
@@ -102,6 +104,9 @@ int main() {
             DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, stylusColor);
             DrawCircleV(prevStylusPos, stylusRadius, stylusColor);
             EndTextureMode();
+
+            knobRotations.xRotation += (stylusPos.x - prevStylusPos.x) * knobRotationSpeed;
+            knobRotations.yRotation += (stylusPos.y - prevStylusPos.y) * knobRotationSpeed;
         }
 
         if (IsKeyPressed(key_clear)) {
