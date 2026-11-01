@@ -14,7 +14,7 @@ void SetWindowIcon() {
 }
 
 void UpdateStylusPosition(Vector2& stylusPos, const float& dt) {
-    const int dPos = stylusMovementSpeed * dt;
+    const float dPos = stylusMovementSpeed * dt;
     if (IsKeyDown(key_right_1) || IsKeyDown(key_right_2)) {
         stylusPos.x += dPos;
         constexpr unsigned int maxPosX = canvasWidth - stylusRadius;
