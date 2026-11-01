@@ -66,8 +66,8 @@ void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
 }
 
 void DrawKnob(const Vector2& knobCenter, const float& rotation, const Vector2& shakeOffsets) {
-    const float offsetKnobX = knobCenter.x - shakeOffsets.x;
-    const float offsetKnobY = knobCenter.y - shakeOffsets.y;
+    const float offsetKnobX = knobCenter.x + shakeOffsets.x;
+    const float offsetKnobY = knobCenter.y + shakeOffsets.y;
 
     DrawCircle(offsetKnobX, offsetKnobY, knobOuterRadius, knobOuterColor);
     DrawCircle(offsetKnobX, offsetKnobY, knobInnerRadius, knobInnerColor);
