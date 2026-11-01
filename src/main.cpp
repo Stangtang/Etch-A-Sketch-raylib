@@ -66,23 +66,21 @@ void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
 }
 
 void DrawKnob(const Vector2& knobCenter, const float& rotation, const Vector2& shakeOffsets) {
-    // DrawCircleV(knobCenter, knobOuterRadius, knobOuterColor);
-    DrawCircle(knobCenter.x + shakeOffsets.x, knobCenter.y + shakeOffsets.y, knobOuterRadius, knobOuterColor);
-    // DrawCircleV(knobCenter, knobInnerRadius, knobInnerColor);
-    DrawCircle(knobCenter.x + shakeOffsets.x, knobCenter.y + shakeOffsets.y, knobInnerRadius, knobInnerColor);
+    const float offsetKnobX = knobCenter.x - shakeOffsets.x;
+    const float offsetKnobY = knobCenter.y - shakeOffsets.y;
 
-    Vector2 rotationMarkerEnd{knobCenter.x + knobRotationMarkerDrawnLength * std::cos(rotation) + shakeOffsets.x,
-                              knobCenter.y + knobRotationMarkerDrawnLength * std::sin(rotation) + shakeOffsets.y};
-    DrawLineEx({knobCenter.x + shakeOffsets.y, knobCenter.y + shakeOffsets.y}, rotationMarkerEnd,
-               knobRotationMarkerThickness, knobRotationMarkerColor);
+    DrawCircle(offsetKnobX, offsetKnobY, knobOuterRadius, knobOuterColor);
+    DrawCircle(offsetKnobX, offsetKnobY, knobInnerRadius, knobInnerColor);
 
-    // DrawCircleV(knobCenter, knobRotationMarkerCoveredLength, knobInnerColor);
-    DrawCircle(knobCenter.x + shakeOffsets.x, knobCenter.y + shakeOffsets.y, knobRotationMarkerCoveredLength,
-               knobInnerColor);
+    Vector2 rotationMarkerEnd{offsetKnobX + knobRotationMarkerDrawnLength * std::cos(rotation),
+                              offsetKnobY + knobRotationMarkerDrawnLength * std::sin(rotation)};
+    DrawLineEx({offsetKnobX, offsetKnobY}, rotationMarkerEnd, knobRotationMarkerThickness, knobRotationMarkerColor);
+
+    DrawCircle(offsetKnobX, offsetKnobY, knobRotationMarkerCoveredLength, knobInnerColor);
 
     DrawCircleV(rotationMarkerEnd, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
-    Vector2 rotationMarkerStart{knobCenter.x + knobRotationMarkerCoveredLength * std::cos(rotation) + shakeOffsets.x,
-                                knobCenter.y + knobRotationMarkerCoveredLength * std::sin(rotation) + shakeOffsets.y};
+    Vector2 rotationMarkerStart{offsetKnobX + knobRotationMarkerCoveredLength * std::cos(rotation),
+                                offsetKnobY + knobRotationMarkerCoveredLength * std::sin(rotation)};
     DrawCircleV(rotationMarkerStart, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
 }
 
