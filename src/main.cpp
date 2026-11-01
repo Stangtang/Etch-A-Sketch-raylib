@@ -88,10 +88,11 @@ void DrawKnobs(const Vector2& knobRotations, const Vector2& shakeOffsets) {
     DrawKnob(rightKnobCenter, knobRotations.y, shakeOffsets);
 }
 
-void DrawSaveNotice(const unsigned int& saveMessageX, const unsigned int& saveMessageY) {
+void DrawSaveNotice(const unsigned int& saveMessageX, const unsigned int& saveMessageY, const float& saveNoticeProgress) {
+    const float easedColorAlpha = 1.0f - std::pow(saveNoticeProgress, 3);
     DrawRectangleRounded({saveNoticeBoxX, saveNoticeBoxY, saveNoticeBoxWidth, saveNoticeBoxHeight}, saveNoticeBoxRoundness,
-                         saveNoticeBoxCornerSegments, saveNoticeBoxColor);
-    DrawText(saveMessage.c_str(), saveMessageX, saveMessageY, saveMessageFontSize, saveMessageColor);
+                         saveNoticeBoxCornerSegments, Fade(saveNoticeBoxColor, easedColorAlpha));
+    DrawText(saveMessage.c_str(), saveMessageX, saveMessageY, saveMessageFontSize, Fade(saveMessageColor, easedColorAlpha));
 }
 
 int main() {
@@ -118,6 +119,7 @@ int main() {
     }
     unsigned int screenshotNumber = 1;
     float saveNoticeTimer = 0.0f;
+    float saveNoticeProgress = 0.0f;
     // calculate save message constants after window is loaded
     const unsigned int saveMessageWidth = MeasureText(saveMessage.c_str(), saveMessageFontSize);
     const unsigned int saveMessageX = canvasX + canvasWidth / 2 - saveMessageWidth / 2;
@@ -171,9 +173,12 @@ int main() {
             saveNoticeTimer = saveNoticeDuration;
         }
         if (saveNoticeTimer > 0.0f) {
+            saveNoticeProgress = 1.0f - saveNoticeTimer / saveNoticeDuration;
+
             saveNoticeTimer -= dt;
             if (saveNoticeTimer <= 0.0f) {
                 saveNoticeTimer = 0.0f;
+                saveNoticeProgress = 0.0f;
             }
         }
 
@@ -188,7 +193,7 @@ int main() {
         DrawKnobs(knobRotations, shakeOffsets);
 
         if (saveNoticeTimer > 0.0f) {
-            DrawSaveNotice(saveMessageX, saveMessageY);
+            DrawSaveNotice(saveMessageX, saveMessageY, saveNoticeProgress);
         }
 
         EndDrawing();
