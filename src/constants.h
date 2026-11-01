@@ -16,6 +16,11 @@ constexpr unsigned int canvasWidth = windowWidth - 2 * canvasLeftRightPadding;
 constexpr unsigned int canvasHeight = windowHeight - canvasTopPadding - canvasBottomPadding;
 constexpr Color canvasColor = LIGHTGRAY;
 
+// erasure shake constants
+constexpr float erasureShakeDuration = 1.0f;
+constexpr float erasureShakeCycles = 5.0f;
+constexpr float initialMaxShakeDisplacement = 15.0f;
+
 // stylus constants
 constexpr unsigned int stylusStartingX = canvasWidth / 2.0f;
 constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;

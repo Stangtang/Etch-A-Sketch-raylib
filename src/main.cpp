@@ -53,28 +53,32 @@ void ClearCanvas(const RenderTexture2D& canvas) {
     EndTextureMode();
 }
 
-void DrawCanvas(const RenderTexture2D& canvas) {
+void DrawCanvas(const RenderTexture2D& canvas, const float& shakeOffset) {
     DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
-                   {static_cast<float>(canvasX), static_cast<float>(canvasY)}, WHITE);
+                   {static_cast<float>(canvasX) + shakeOffset, static_cast<float>(canvasY) + shakeOffset}, WHITE);
 }
 
-void DrawStylus(const Vector2& stylusPos) {
-    DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
+void DrawStylus(const Vector2& stylusPos, const float& shakeOffset) {
+    DrawCircle(canvasX + stylusPos.x + shakeOffset, canvasY + stylusPos.y + shakeOffset, stylusRadius, stylusColor);
 }
 
-void DrawKnob(const Vector2& knobCenter, const float& rotation) {
-    DrawCircleV(knobCenter, knobOuterRadius, knobOuterColor);
-    DrawCircleV(knobCenter, knobInnerRadius, knobInnerColor);
+void DrawKnob(const Vector2& knobCenter, const float& rotation, const float& shakeOffset) {
+    // DrawCircleV(knobCenter, knobOuterRadius, knobOuterColor);
+    DrawCircle(knobCenter.x + shakeOffset, knobCenter.y + shakeOffset, knobOuterRadius, knobOuterColor);
+    // DrawCircleV(knobCenter, knobInnerRadius, knobInnerColor);
+    DrawCircle(knobCenter.x + shakeOffset, knobCenter.y + shakeOffset, knobInnerRadius, knobInnerColor);
 
-    Vector2 rotationMarkerEnd{knobCenter.x + knobRotationMarkerDrawnLength * std::cos(rotation),
-                              knobCenter.y + knobRotationMarkerDrawnLength * std::sin(rotation)};
-    DrawLineEx(knobCenter, rotationMarkerEnd, knobRotationMarkerThickness, knobRotationMarkerColor);
+    Vector2 rotationMarkerEnd{knobCenter.x + knobRotationMarkerDrawnLength * std::cos(rotation) + shakeOffset,
+                              knobCenter.y + knobRotationMarkerDrawnLength * std::sin(rotation) + shakeOffset};
+    DrawLineEx({knobCenter.x + shakeOffset, knobCenter.y + shakeOffset}, rotationMarkerEnd, knobRotationMarkerThickness,
+               knobRotationMarkerColor);
 
-    DrawCircleV(knobCenter, knobRotationMarkerCoveredLength, knobInnerColor);
+    // DrawCircleV(knobCenter, knobRotationMarkerCoveredLength, knobInnerColor);
+    DrawCircle(knobCenter.x + shakeOffset, knobCenter.y + shakeOffset, knobRotationMarkerCoveredLength, knobInnerColor);
 
     DrawCircleV(rotationMarkerEnd, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
-    Vector2 rotationMarkerStart{knobCenter.x + knobRotationMarkerCoveredLength * std::cos(rotation),
-                                knobCenter.y + knobRotationMarkerCoveredLength * std::sin(rotation)};
+    Vector2 rotationMarkerStart{knobCenter.x + knobRotationMarkerCoveredLength * std::cos(rotation) + shakeOffset,
+                                knobCenter.y + knobRotationMarkerCoveredLength * std::sin(rotation) + shakeOffset};
     DrawCircleV(rotationMarkerStart, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
 }
 
@@ -91,38 +95,55 @@ int main() {
 
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
     ClearCanvas(canvas);
+    float erasureShakeTimer = 0.0f;
 
     KnobRotations knobRotations{0.0f, 0.0f};
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
 
-        const Vector2 prevStylusPos = stylusPos;
-        UpdateStylusPosition(stylusPos, dt);
-        if (HasPositionChanged(prevStylusPos, stylusPos)) {
-            BeginTextureMode(canvas);
-            DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, lineColor);
-            DrawCircleV(prevStylusPos, stylusRadius, lineColor);
-            EndTextureMode();
+        if (erasureShakeTimer <= 0.0f) {
+            const Vector2 prevStylusPos = stylusPos;
+            UpdateStylusPosition(stylusPos, dt);
+            if (HasPositionChanged(prevStylusPos, stylusPos)) {
+                BeginTextureMode(canvas);
+                DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, lineColor);
+                DrawCircleV(prevStylusPos, stylusRadius, lineColor);
+                EndTextureMode();
 
-            knobRotations.xRotation += (stylusPos.x - prevStylusPos.x) * knobRotationSpeed;
-            knobRotations.yRotation += (stylusPos.y - prevStylusPos.y) * knobRotationSpeed;
+                knobRotations.xRotation += (stylusPos.x - prevStylusPos.x) * knobRotationSpeed;
+                knobRotations.yRotation += (stylusPos.y - prevStylusPos.y) * knobRotationSpeed;
+            }
         }
 
-        if (IsKeyPressed(key_clear)) {
-            ClearCanvas(canvas);
+        if (IsKeyPressed(key_clear) && erasureShakeTimer <= 0.0f) {
+            erasureShakeTimer = erasureShakeDuration;
+        }
+        if (erasureShakeTimer > 0.0f) {
+            erasureShakeTimer -= dt;
+            if (erasureShakeTimer <= 0.0f) {
+                erasureShakeTimer = 0.0f;
+                ClearCanvas(canvas);
+            }
+        }
+
+        float shakeOffset = 0.0f;
+        if (erasureShakeTimer > 0.0f) {
+            const float erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
+            shakeOffset = std::sin(erasureProgress * 2.0f * PI * erasureShakeCycles) * initialMaxShakeDisplacement *
+                          (1.0f - erasureProgress);
         }
 
         BeginDrawing();
 
         ClearBackground(backgroundColor);
 
-        DrawCanvas(canvas);
+        DrawCanvas(canvas, shakeOffset);
 
-        DrawStylus(stylusPos);
+        DrawStylus(stylusPos, shakeOffset);
 
-        DrawKnob(leftKnobCenter, knobRotations.xRotation);
-        DrawKnob(rightKnobCenter, knobRotations.yRotation);
+        DrawKnob(leftKnobCenter, knobRotations.xRotation, shakeOffset);
+        DrawKnob(rightKnobCenter, knobRotations.yRotation, shakeOffset);
 
         EndDrawing();
     }
