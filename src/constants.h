@@ -67,3 +67,15 @@ constexpr int key_save_withControlDown = KeyboardKey::KEY_S;
 // screenshot
 const std::string screenshotFolder = std::string(GetApplicationDirectory()) + "screenshots";
 constexpr std::string screenshotName = "screenshot";
+constexpr float saveNoticeDuration = 1.5f;
+constexpr unsigned int saveNoticeBoxWidth = 200;
+constexpr unsigned int saveNoticeBoxHeight = 75;
+constexpr unsigned int saveNoticeBoxX = canvasX + (canvasWidth - saveNoticeBoxWidth) / 2;
+constexpr unsigned int saveNoticeBoxY = canvasY + (canvasHeight - saveNoticeBoxHeight) / 2;
+constexpr float saveNoticeBoxRoundness = 0.10f;
+constexpr unsigned int saveNoticeBoxCornerSegments = 5;  // number of segments to use to draw rounded edge
+const std::string saveMessage = "Screenshot Saved!";
+constexpr unsigned int saveMessageFontSize = 17;
+// const Color saveNoticeBoxColor = ColorLerp(LIME, WHITE, 0.60f);
+const Color saveNoticeBoxColor = ColorFromHSV(120.0f, 0.2f, 0.9f);
+constexpr Color saveMessageColor = LIME;

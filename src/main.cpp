@@ -107,10 +107,15 @@ int main() {
     float erasureProgress = 0.0f;
     Vector2 shakeOffsets{0.0f, 0.0f};
 
-    unsigned int screenshotNumber = 1;
     if (!DirectoryExists(screenshotFolder.c_str())) {
         MakeDirectory(screenshotFolder.c_str());
     }
+    unsigned int screenshotNumber = 1;
+    float saveNoticeTimer = 0.0f;
+    // calculate save message constants after window is loaded
+    const unsigned int saveMessageWidth = MeasureText(saveMessage.c_str(), saveMessageFontSize);
+    const unsigned int saveMessageX = canvasX + canvasWidth / 2 - saveMessageWidth / 2;
+    constexpr unsigned int saveMessageY = canvasY + canvasHeight / 2 - saveMessageFontSize / 2;
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
@@ -156,6 +161,14 @@ int main() {
                 screenshotFolder + '/' + screenshotName + std::to_string(screenshotNumber++) + ".png";
             ExportImage(screenshot, screenshotPath.c_str());
             UnloadImage(screenshot);
+
+            saveNoticeTimer = saveNoticeDuration;
+        }
+        if (saveNoticeTimer > 0.0f) {
+            saveNoticeTimer -= dt;
+            if (saveNoticeTimer <= 0.0f) {
+                saveNoticeTimer = 0.0f;
+            }
         }
 
         BeginDrawing();
@@ -167,6 +180,12 @@ int main() {
         DrawStylus(stylusPos, shakeOffsets);
 
         DrawKnobs(knobRotations, shakeOffsets);
+
+        if (saveNoticeTimer > 0.0f) {
+            DrawRectangleRounded({saveNoticeBoxX, saveNoticeBoxY, saveNoticeBoxWidth, saveNoticeBoxHeight},
+                                 saveNoticeBoxRoundness, saveNoticeBoxCornerSegments, saveNoticeBoxColor);
+            DrawText(saveMessage.c_str(), saveMessageX, saveMessageY, saveMessageFontSize, saveMessageColor);
+        }
 
         EndDrawing();
     }
