@@ -18,5 +18,6 @@ constexpr Color canvasColor = LIGHTGRAY;
 // stylus constants
 constexpr unsigned int stylusStartingX = canvasWidth / 2.0f;
 constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;
-constexpr float stylusRadius = 2.0f;
+constexpr float stylusRadius = 10.0f;      // big for testing purposes
+const float stylusMovementSpeed = 500.0f;  // fast for testing purposes
 constexpr Color stylusColor = BLACK;
