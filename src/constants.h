@@ -76,6 +76,5 @@ constexpr float saveNoticeBoxRoundness = 0.10f;
 constexpr unsigned int saveNoticeBoxCornerSegments = 5;  // number of segments to use to draw rounded edge
 const std::string saveMessage = "Screenshot Saved!";
 constexpr unsigned int saveMessageFontSize = 17;
-// const Color saveNoticeBoxColor = ColorLerp(LIME, WHITE, 0.60f);
 const Color saveNoticeBoxColor = ColorFromHSV(120.0f, 0.2f, 0.9f);
 constexpr Color saveMessageColor = LIME;
