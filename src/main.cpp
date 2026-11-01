@@ -96,8 +96,7 @@ int main() {
 
     SetWindowIcon();
 
-    Vector2 stylusPos{// stylus position relative to top-left corner of canvas
-                      stylusStartingX, stylusStartingY};
+    Vector2 stylusPos{stylusStartingX, stylusStartingY};  // stylus position relative to top-left corner of canvas
 
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
     ClearCanvas(canvas);
