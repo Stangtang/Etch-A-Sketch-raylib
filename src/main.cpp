@@ -45,6 +45,12 @@ bool HasPositionChanged(Vector2 prevPos, Vector2 currPos) {
     return (prevPos.x != currPos.x) || (prevPos.y != currPos.y);
 }
 
+void ClearCanvas(RenderTexture2D canvas) {
+    BeginTextureMode(canvas);
+    ClearBackground(canvasColor);
+    EndTextureMode();
+}
+
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
@@ -57,22 +63,22 @@ int main() {
                       stylusStartingX, stylusStartingY};
 
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
-    BeginTextureMode(canvas);
-    ClearBackground(canvasColor);
-    DrawCircleV(stylusPos, stylusRadius, stylusColor);
-    EndTextureMode();
+    ClearCanvas(canvas);
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
 
         const Vector2 prevStylusPos = stylusPos;
         UpdateStylusPosition(stylusPos, dt);
-
         if (HasPositionChanged(prevStylusPos, stylusPos)) {
             BeginTextureMode(canvas);
             DrawLineEx(prevStylusPos, stylusPos, 2 * stylusRadius, stylusColor);
             DrawCircleV(prevStylusPos, stylusRadius, stylusColor);
             EndTextureMode();
+        }
+
+        if (IsKeyPressed(key_clear)) {
+            ClearCanvas(canvas);
         }
 
         BeginDrawing();
