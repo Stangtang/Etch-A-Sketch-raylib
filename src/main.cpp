@@ -53,9 +53,10 @@ void ClearCanvas(const RenderTexture2D& canvas) {
     EndTextureMode();
 }
 
-void DrawCanvas(const RenderTexture2D& canvas, const Vector2& shakeOffsets) {
+void DrawCanvas(const RenderTexture2D& canvas, const Vector2& shakeOffsets, const float& erasureProgress) {
     DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
                    {static_cast<float>(canvasX) + shakeOffsets.x, static_cast<float>(canvasY) + shakeOffsets.y}, WHITE);
+    DrawRectangle(canvasX, canvasY, canvasWidth, canvasHeight, Fade(canvasColor, erasureProgress));
 }
 
 void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
@@ -97,10 +98,11 @@ int main() {
 
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
     ClearCanvas(canvas);
-    float erasureShakeTimer = 0.0f;
 
     KnobRotations knobRotations{0.0f, 0.0f};
 
+    float erasureShakeTimer = 0.0f;
+    float erasureProgress = 0.0f;
     Vector2 shakeOffsets{0.0f, 0.0f};
 
     while (!WindowShouldClose()) {
@@ -132,7 +134,7 @@ int main() {
         }
 
         if (erasureShakeTimer > 0.0f) {
-            const float erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
+            erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
             const float angle = erasureProgress * 2.0f * PI * erasureShakeCycles;
             shakeOffsets.x = std::cos(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
             shakeOffsets.y = std::sin(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
@@ -142,7 +144,7 @@ int main() {
 
         ClearBackground(backgroundColor);
 
-        DrawCanvas(canvas, shakeOffsets);
+        DrawCanvas(canvas, shakeOffsets, erasureProgress);
 
         DrawStylus(stylusPos, shakeOffsets);
 
