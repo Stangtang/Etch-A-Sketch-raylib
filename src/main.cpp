@@ -117,6 +117,8 @@ int main() {
 
                 knobRotations.x += (stylusPos.x - prevStylusPos.x) * knobRotationSpeed;
                 knobRotations.y += (stylusPos.y - prevStylusPos.y) * knobRotationSpeed;
+                knobRotations.x = std::fmod(knobRotations.x, _2PI);
+                knobRotations.y = std::fmod(knobRotations.y, _2PI);
             }
         }
 
@@ -135,7 +137,7 @@ int main() {
 
         if (erasureShakeTimer > 0.0f) {
             erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
-            const float angle = erasureProgress * 2.0f * PI * erasureShakeCycles;
+            const float angle = erasureProgress * _2PI * erasureShakeCycles;
             shakeOffsets.x = std::cos(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
             shakeOffsets.y = std::sin(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
         }

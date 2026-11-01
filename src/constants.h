@@ -1,5 +1,9 @@
 #pragma once
+
 #include "raylib.h"
+
+// math
+constexpr float _2PI = 2 * PI;
 
 // window
 constexpr unsigned int windowWidth = 1200;
