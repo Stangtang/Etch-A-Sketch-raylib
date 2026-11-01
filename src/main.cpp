@@ -167,5 +167,6 @@ int main() {
     UnloadRenderTexture(canvas);
 
     CloseWindow();
+
     return 0;
 }
