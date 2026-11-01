@@ -52,19 +52,29 @@ int main() {
     Vector2 stylusPos{// stylus position relative to top-left corner of canvas
                       stylusStartingX, stylusStartingY};
 
+    RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
+
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
 
         UpdateStylusPosition(stylusPos, dt);
 
+        BeginTextureMode(canvas);
+        ClearBackground(canvasColor);
+        DrawCircle(30, 30, 10, BLACK);
+        EndTextureMode();
+
         BeginDrawing();
 
         ClearBackground(backgroundColor);
-        DrawRectangle(canvasX, canvasY, canvasWidth, canvasHeight, canvasColor);
+        DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
+                       {static_cast<float>(canvasX), static_cast<float>(canvasY)}, WHITE);
         DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
 
         EndDrawing();
     }
+
+    UnloadRenderTexture(canvas);
 
     CloseWindow();
     return 0;
