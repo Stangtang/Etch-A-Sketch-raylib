@@ -13,27 +13,27 @@ void SetWindowIcon() {
 
 void UpdateStylusPosition(Vector2& stylusPos, const float& dt) {
     const int dPos = stylusMovementSpeed * dt;
-    if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
+    if (IsKeyDown(key_right_1) || IsKeyDown(key_right_2)) {
         stylusPos.x += dPos;
         constexpr unsigned int maxPosX = canvasWidth - stylusRadius;
         if (stylusPos.x > maxPosX) {
             stylusPos.x = maxPosX;
         }
     }
-    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
+    if (IsKeyDown(key_left_1) || IsKeyDown(key_left_2)) {
         stylusPos.x -= dPos;
         if (stylusPos.x < 0 + stylusRadius) {
             stylusPos.x = 0 + stylusRadius;
         }
     }
-    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
+    if (IsKeyDown(key_down_1) || IsKeyDown(key_down_2)) {
         stylusPos.y += dPos;
         constexpr unsigned int maxPosY = canvasHeight - stylusRadius;
         if (stylusPos.y > maxPosY) {
             stylusPos.y = maxPosY;
         }
     }
-    if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
+    if (IsKeyDown(key_up_1) || IsKeyDown(key_up_2)) {
         stylusPos.y -= dPos;
         if (stylusPos.y < 0 + stylusRadius) {
             stylusPos.y = 0 + stylusRadius;

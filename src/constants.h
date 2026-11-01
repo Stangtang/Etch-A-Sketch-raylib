@@ -21,3 +21,13 @@ constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;
 constexpr float stylusRadius = 10.0f;      // big for testing purposes
 const float stylusMovementSpeed = 500.0f;  // fast for testing purposes
 constexpr Color stylusColor = BLACK;
+
+// control constants
+constexpr int key_right_1 = KeyboardKey::KEY_RIGHT;
+constexpr int key_right_2 = KeyboardKey::KEY_D;
+constexpr int key_left_1 = KeyboardKey::KEY_LEFT;
+constexpr int key_left_2 = KeyboardKey::KEY_A;
+constexpr int key_down_1 = KeyboardKey::KEY_DOWN;
+constexpr int key_down_2 = KeyboardKey::KEY_S;
+constexpr int key_up_1 = KeyboardKey::KEY_UP;
+constexpr int key_up_2 = KeyboardKey::KEY_W;
