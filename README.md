@@ -28,6 +28,10 @@ Controls/Help menu coming soon
 * CD back to the root
 * run `make`
 * you are good to go
+<!--
+add flag `--cc=clang` if using using clang?
+`.\premake5 --cc=clang gmake`
+-->
 
 # Output files
 The built code will be in the bin dir
