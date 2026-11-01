@@ -61,8 +61,7 @@ void DrawCanvas(const RenderTexture2D& canvas, const Vector2& shakeOffsets, cons
 }
 
 void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
-    DrawCircle(canvasX + stylusPos.x + shakeOffsets.x, canvasY + stylusPos.y + shakeOffsets.y, stylusRadius,
-               stylusColor);
+    DrawCircle(canvasX + stylusPos.x + shakeOffsets.x, canvasY + stylusPos.y + shakeOffsets.y, stylusRadius, stylusColor);
 }
 
 void DrawKnob(const Vector2& knobCenter, const float& rotation, const Vector2& shakeOffsets) {
