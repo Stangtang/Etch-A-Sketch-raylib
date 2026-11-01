@@ -19,11 +19,15 @@ int main() {
 
     SetWindowIcon();
 
+    Vector2 stylusPos{// stylus position relative to top-left corner of canvas
+                      stylusStartingX, stylusStartingY};
+
     while (!WindowShouldClose()) {
         BeginDrawing();
 
-        ClearBackground(WHITE);
-        DrawRectangle(canvasX, canvasY, canvasWidth, canvasHeight, LIGHTGRAY);
+        ClearBackground(backgroundColor);
+        DrawRectangle(canvasX, canvasY, canvasWidth, canvasHeight, canvasColor);
+        DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
 
         EndDrawing();
     }
