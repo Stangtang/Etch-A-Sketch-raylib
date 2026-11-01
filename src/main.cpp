@@ -88,6 +88,12 @@ void DrawKnobs(const Vector2& knobRotations, const Vector2& shakeOffsets) {
     DrawKnob(rightKnobCenter, knobRotations.y, shakeOffsets);
 }
 
+void DrawSaveNotice(const unsigned int& saveMessageX, const unsigned int& saveMessageY) {
+    DrawRectangleRounded({saveNoticeBoxX, saveNoticeBoxY, saveNoticeBoxWidth, saveNoticeBoxHeight}, saveNoticeBoxRoundness,
+                         saveNoticeBoxCornerSegments, saveNoticeBoxColor);
+    DrawText(saveMessage.c_str(), saveMessageX, saveMessageY, saveMessageFontSize, saveMessageColor);
+}
+
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
@@ -182,9 +188,7 @@ int main() {
         DrawKnobs(knobRotations, shakeOffsets);
 
         if (saveNoticeTimer > 0.0f) {
-            DrawRectangleRounded({saveNoticeBoxX, saveNoticeBoxY, saveNoticeBoxWidth, saveNoticeBoxHeight},
-                                 saveNoticeBoxRoundness, saveNoticeBoxCornerSegments, saveNoticeBoxColor);
-            DrawText(saveMessage.c_str(), saveMessageX, saveMessageY, saveMessageFontSize, saveMessageColor);
+            DrawSaveNotice(saveMessageX, saveMessageY);
         }
 
         EndDrawing();
