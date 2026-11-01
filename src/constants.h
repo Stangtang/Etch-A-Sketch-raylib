@@ -60,3 +60,4 @@ constexpr int key_down_2 = KeyboardKey::KEY_S;
 constexpr int key_up_1 = KeyboardKey::KEY_UP;
 constexpr int key_up_2 = KeyboardKey::KEY_W;
 constexpr int key_clear = KeyboardKey::KEY_SPACE;
+constexpr int key_save_withControlDown = KeyboardKey::KEY_S;
