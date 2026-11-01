@@ -53,32 +53,34 @@ void ClearCanvas(const RenderTexture2D& canvas) {
     EndTextureMode();
 }
 
-void DrawCanvas(const RenderTexture2D& canvas, const float& shakeOffset) {
+void DrawCanvas(const RenderTexture2D& canvas, const Vector2& shakeOffsets) {
     DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
-                   {static_cast<float>(canvasX) + shakeOffset, static_cast<float>(canvasY) + shakeOffset}, WHITE);
+                   {static_cast<float>(canvasX) + shakeOffsets.x, static_cast<float>(canvasY) + shakeOffsets.y}, WHITE);
 }
 
-void DrawStylus(const Vector2& stylusPos, const float& shakeOffset) {
-    DrawCircle(canvasX + stylusPos.x + shakeOffset, canvasY + stylusPos.y + shakeOffset, stylusRadius, stylusColor);
+void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
+    DrawCircle(canvasX + stylusPos.x + shakeOffsets.x, canvasY + stylusPos.y + shakeOffsets.y, stylusRadius,
+               stylusColor);
 }
 
-void DrawKnob(const Vector2& knobCenter, const float& rotation, const float& shakeOffset) {
+void DrawKnob(const Vector2& knobCenter, const float& rotation, const Vector2& shakeOffsets) {
     // DrawCircleV(knobCenter, knobOuterRadius, knobOuterColor);
-    DrawCircle(knobCenter.x + shakeOffset, knobCenter.y + shakeOffset, knobOuterRadius, knobOuterColor);
+    DrawCircle(knobCenter.x + shakeOffsets.x, knobCenter.y + shakeOffsets.y, knobOuterRadius, knobOuterColor);
     // DrawCircleV(knobCenter, knobInnerRadius, knobInnerColor);
-    DrawCircle(knobCenter.x + shakeOffset, knobCenter.y + shakeOffset, knobInnerRadius, knobInnerColor);
+    DrawCircle(knobCenter.x + shakeOffsets.x, knobCenter.y + shakeOffsets.y, knobInnerRadius, knobInnerColor);
 
-    Vector2 rotationMarkerEnd{knobCenter.x + knobRotationMarkerDrawnLength * std::cos(rotation) + shakeOffset,
-                              knobCenter.y + knobRotationMarkerDrawnLength * std::sin(rotation) + shakeOffset};
-    DrawLineEx({knobCenter.x + shakeOffset, knobCenter.y + shakeOffset}, rotationMarkerEnd, knobRotationMarkerThickness,
-               knobRotationMarkerColor);
+    Vector2 rotationMarkerEnd{knobCenter.x + knobRotationMarkerDrawnLength * std::cos(rotation) + shakeOffsets.x,
+                              knobCenter.y + knobRotationMarkerDrawnLength * std::sin(rotation) + shakeOffsets.y};
+    DrawLineEx({knobCenter.x + shakeOffsets.y, knobCenter.y + shakeOffsets.y}, rotationMarkerEnd,
+               knobRotationMarkerThickness, knobRotationMarkerColor);
 
     // DrawCircleV(knobCenter, knobRotationMarkerCoveredLength, knobInnerColor);
-    DrawCircle(knobCenter.x + shakeOffset, knobCenter.y + shakeOffset, knobRotationMarkerCoveredLength, knobInnerColor);
+    DrawCircle(knobCenter.x + shakeOffsets.x, knobCenter.y + shakeOffsets.y, knobRotationMarkerCoveredLength,
+               knobInnerColor);
 
     DrawCircleV(rotationMarkerEnd, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
-    Vector2 rotationMarkerStart{knobCenter.x + knobRotationMarkerCoveredLength * std::cos(rotation) + shakeOffset,
-                                knobCenter.y + knobRotationMarkerCoveredLength * std::sin(rotation) + shakeOffset};
+    Vector2 rotationMarkerStart{knobCenter.x + knobRotationMarkerCoveredLength * std::cos(rotation) + shakeOffsets.x,
+                                knobCenter.y + knobRotationMarkerCoveredLength * std::sin(rotation) + shakeOffsets.y};
     DrawCircleV(rotationMarkerStart, knobRotationMarkerThickness / 2, knobRotationMarkerColor);
 }
 
@@ -98,6 +100,8 @@ int main() {
     float erasureShakeTimer = 0.0f;
 
     KnobRotations knobRotations{0.0f, 0.0f};
+
+    Vector2 shakeOffsets{0.0f, 0.0f};
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
@@ -127,23 +131,23 @@ int main() {
             }
         }
 
-        float shakeOffset = 0.0f;
         if (erasureShakeTimer > 0.0f) {
             const float erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
-            shakeOffset = std::sin(erasureProgress * 2.0f * PI * erasureShakeCycles) * initialMaxShakeDisplacement *
-                          (1.0f - erasureProgress);
+            const float angle = erasureProgress * 2.0f * PI * erasureShakeCycles;
+            shakeOffsets.x = std::cos(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
+            shakeOffsets.y = std::sin(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
         }
 
         BeginDrawing();
 
         ClearBackground(backgroundColor);
 
-        DrawCanvas(canvas, shakeOffset);
+        DrawCanvas(canvas, shakeOffsets);
 
-        DrawStylus(stylusPos, shakeOffset);
+        DrawStylus(stylusPos, shakeOffsets);
 
-        DrawKnob(leftKnobCenter, knobRotations.xRotation, shakeOffset);
-        DrawKnob(rightKnobCenter, knobRotations.yRotation, shakeOffset);
+        DrawKnob(leftKnobCenter, knobRotations.xRotation, shakeOffsets);
+        DrawKnob(rightKnobCenter, knobRotations.yRotation, shakeOffsets);
 
         EndDrawing();
     }
