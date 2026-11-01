@@ -6,6 +6,10 @@
 # VS Code
 .vscode/
 
+# Make
+Etch-A-Sketch-raylib.make
+raylib.make
+
 # User-specific files
 *.rsuser
 *.suo
