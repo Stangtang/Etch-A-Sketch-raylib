@@ -89,7 +89,8 @@ void DrawKnobs(const Vector2& knobRotations, const Vector2& shakeOffsets) {
 }
 
 int main() {
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+    // SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+    SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
     SetTargetFPS(60);
     SearchAndSetResourceDir("resources");
@@ -109,6 +110,7 @@ int main() {
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
+        const bool isControlKeyDown = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL);
 
         if (erasureShakeTimer <= 0.0f) {
             const Vector2 prevStylusPos = stylusPos;
@@ -142,6 +144,10 @@ int main() {
                 shakeOffsets = {0.0f, 0.0f};
                 ClearCanvas(canvas);
             }
+        }
+
+        if (isControlKeyDown && IsKeyPressed(key_save_withControlDown)) {
+            TakeScreenshot("etch-a-sketch.png");
         }
 
         BeginDrawing();
