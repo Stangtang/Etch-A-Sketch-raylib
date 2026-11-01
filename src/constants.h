@@ -1,12 +1,12 @@
 #pragma once
 #include "raylib.h"
 
-// window constants
+// window
 constexpr unsigned int windowWidth = 1200;
 constexpr unsigned int windowHeight = 850;
 constexpr Color backgroundColor = WHITE;
 
-// canvas constants
+// canvas
 constexpr unsigned int canvasTopPadding = 70;
 constexpr unsigned int canvasBottomPadding = 125;
 constexpr unsigned int canvasLeftRightPadding = 100;
@@ -16,12 +16,12 @@ constexpr unsigned int canvasWidth = windowWidth - 2 * canvasLeftRightPadding;
 constexpr unsigned int canvasHeight = windowHeight - canvasTopPadding - canvasBottomPadding;
 constexpr Color canvasColor = LIGHTGRAY;
 
-// erasure shake constants
+// erasure shake
 constexpr float erasureShakeDuration = 1.0f;
 constexpr float erasureShakeCycles = 5.0f;
 constexpr float initialMaxShakeDisplacement = 15.0f;
 
-// stylus constants
+// stylus
 constexpr unsigned int stylusStartingX = canvasWidth / 2.0f;
 constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;
 constexpr float stylusRadius = 2.0f;           // big for testing purposes
@@ -29,7 +29,7 @@ constexpr float stylusMovementSpeed = 180.0f;  // fast for testing purposes
 constexpr Color stylusColor = DARKGRAY;
 constexpr Color lineColor = BLACK;
 
-// knob constants
+// knob
 constexpr unsigned int knobBottomPadding = (windowHeight - canvasHeight - canvasY) / 2;
 constexpr unsigned int knobLeftRightPadding = 265;
 constexpr unsigned int knobY = windowHeight - knobBottomPadding;
@@ -50,7 +50,7 @@ struct KnobRotations {
     float yRotation;
 };
 
-// control constants
+// control
 constexpr int key_right_1 = KeyboardKey::KEY_RIGHT;
 constexpr int key_right_2 = KeyboardKey::KEY_D;
 constexpr int key_left_1 = KeyboardKey::KEY_LEFT;
