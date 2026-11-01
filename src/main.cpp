@@ -130,6 +130,11 @@ int main() {
             erasureShakeTimer = erasureShakeDuration;
         }
         if (erasureShakeTimer > 0.0f) {
+            erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
+            const float angle = erasureProgress * _2PI * erasureShakeCycles;
+            shakeOffsets.x = std::cos(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
+            shakeOffsets.y = std::sin(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
+
             erasureShakeTimer -= dt;
             if (erasureShakeTimer <= 0.0f) {
                 erasureShakeTimer = 0.0f;
@@ -137,13 +142,6 @@ int main() {
                 shakeOffsets = {0.0f, 0.0f};
                 ClearCanvas(canvas);
             }
-        }
-
-        if (erasureShakeTimer > 0.0f) {
-            erasureProgress = 1.0f - erasureShakeTimer / erasureShakeDuration;
-            const float angle = erasureProgress * _2PI * erasureShakeCycles;
-            shakeOffsets.x = std::cos(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
-            shakeOffsets.y = std::sin(angle) * initialMaxShakeDisplacement * (1.0f - erasureProgress);
         }
 
         BeginDrawing();
