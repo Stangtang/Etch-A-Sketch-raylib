@@ -51,6 +51,16 @@ void ClearCanvas(const RenderTexture2D& canvas) {
     EndTextureMode();
 }
 
+void DrawKnob(const Vector2& center) {
+    DrawCircleV(center, knobOuterRadius, knobOuterColor);
+    DrawCircleV(center, knobInnerRadius, knobInnerColor);
+}
+
+void DrawKnobs() {
+    DrawKnob(leftKnobCenter);
+    DrawKnob(rightKnobCenter);
+}
+
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
@@ -91,6 +101,8 @@ int main() {
 
         // draw stylus
         DrawCircle(canvasX + stylusPos.x, canvasY + stylusPos.y, stylusRadius, stylusColor);
+
+        DrawKnobs();
 
         EndDrawing();
     }
