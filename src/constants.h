@@ -18,14 +18,14 @@ constexpr Color canvasColor = LIGHTGRAY;
 
 // erasure shake
 constexpr float erasureShakeDuration = 1.0f;
-constexpr float erasureShakeCycles = 5.0f;
-constexpr float initialMaxShakeDisplacement = 15.0f;
+constexpr float erasureShakeCycles = 3.0f;
+constexpr float initialMaxShakeDisplacement = 10.0f;
 
 // stylus
 constexpr unsigned int stylusStartingX = canvasWidth / 2.0f;
 constexpr unsigned int stylusStartingY = canvasHeight / 2.0f;
-constexpr float stylusRadius = 2.0f;           // big for testing purposes
-constexpr float stylusMovementSpeed = 180.0f;  // fast for testing purposes
+constexpr float stylusRadius = 2.0f;
+constexpr float stylusMovementSpeed = 180.0f;
 constexpr Color stylusColor = DARKGRAY;
 constexpr Color lineColor = BLACK;
 
