@@ -41,11 +41,11 @@ void UpdateStylusPosition(Vector2& stylusPos, const float& dt) {
     }
 }
 
-bool HasPositionChanged(Vector2 prevPos, Vector2 currPos) {
+bool HasPositionChanged(const Vector2& prevPos, const Vector2& currPos) {
     return (prevPos.x != currPos.x) || (prevPos.y != currPos.y);
 }
 
-void ClearCanvas(RenderTexture2D canvas) {
+void ClearCanvas(const RenderTexture2D& canvas) {
     BeginTextureMode(canvas);
     ClearBackground(canvasColor);
     EndTextureMode();
