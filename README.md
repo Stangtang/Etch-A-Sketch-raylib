@@ -1,8 +1,12 @@
 # Etch-A-Sketch
 
-Etch-A-Sketch made with raylib and C++
+Etch-A-Sketch made with raylib and C++.
 
-Controls/Help menu coming soon
+## Controls / Customization
+
+Press H for help menu.
+
+Controls can be changed in `constants.h`.
 
 # Building
 
@@ -13,7 +17,7 @@ Controls/Help menu coming soon
 1. Run the build task ( CTRL+SHIFT+B or F5 )
 2. You are good to go
 
-## Linux/Windows (MingGW)
+## Linux / Windows (MingGW)
 * Rename the folder to your game name
 * CD into the build folder
 * Run `./premake5 gmake`
