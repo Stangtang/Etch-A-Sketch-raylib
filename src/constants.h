@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 
 #include "raylib.h"
@@ -65,6 +66,7 @@ constexpr int key_up_1 = KeyboardKey::KEY_UP;
 constexpr int key_up_2 = KeyboardKey::KEY_W;
 constexpr int key_clear = KeyboardKey::KEY_SPACE;
 constexpr int key_save_withControlDown = KeyboardKey::KEY_S;
+constexpr int key_help = KeyboardKey::KEY_H;
 
 // screenshot
 const std::string screenshotFolder = std::string(GetApplicationDirectory()) + "screenshots";
@@ -80,3 +82,17 @@ const std::string saveMessage = "Screenshot Saved!";
 constexpr unsigned int saveMessageFontSize = 17;
 const Color saveNoticeBoxColor = ColorFromHSV(120.0f, 0.2f, 0.9f);
 constexpr Color saveMessageColor = LIME;
+
+// help
+constexpr unsigned int helpMenuWidth = 190;
+constexpr unsigned int helpMenuHeight = 70;
+constexpr unsigned int helpMenuRightPadding = 100;
+constexpr unsigned int helpMenuX = windowWidth - helpMenuRightPadding - helpMenuWidth;
+constexpr unsigned int helpMenuY = canvasY;
+constexpr float helpMenuRoundness = 0.10f;
+constexpr unsigned int helpMenuCornerSegments = 3;
+const std::string helpMenuText = "Arrows / WASD: move stylus\nSpace: shake to erase\nCtrl+S: save\nH: toggle help";
+constexpr unsigned int helpMenuFontSize = 10;
+const unsigned int helpMenuTextLines = std::count(helpMenuText.begin(), helpMenuText.end(), '\n') + 1;
+constexpr Color helpMenuColor{246, 239, 213, 255};
+constexpr Color helpMenuTextColor{72, 60, 53, 255};

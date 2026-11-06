@@ -59,8 +59,7 @@ void ClearCanvas(const RenderTexture2D& canvas) {
 void DrawCanvas(const RenderTexture2D& canvas, const Vector2& shakeOffsets, const float& erasureProgress) {
     DrawTextureRec(canvas.texture, {0, 0, static_cast<float>(canvasWidth), -static_cast<float>(canvasHeight)},
                    {canvasX + shakeOffsets.x, canvasY + shakeOffsets.y}, WHITE);
-    DrawRectangle(canvasX + shakeOffsets.x, canvasY + shakeOffsets.y, canvasWidth, canvasHeight,
-                  Fade(canvasColor, erasureProgress));
+    DrawRectangle(canvasX + shakeOffsets.x, canvasY + shakeOffsets.y, canvasWidth, canvasHeight, Fade(canvasColor, erasureProgress));
 }
 
 void DrawStylus(const Vector2& stylusPos, const Vector2& shakeOffsets) {
@@ -98,6 +97,16 @@ void DrawSaveNotice(const unsigned int& saveMessageX, const unsigned int& saveMe
     DrawText(saveMessage.c_str(), saveMessageX, saveMessageY, saveMessageFontSize, Fade(saveMessageColor, easedColorAlpha));
 }
 
+void DrawHelpMenu(const bool& showHelpMenu, const unsigned int& helpMenuTextX, const unsigned int& helpMenuTextY) {
+    DrawText("H: Help", windowWidth - 40, 10, 10, Fade(helpMenuTextColor, 0.5f));
+    if (!showHelpMenu) {
+        return;
+    }
+
+    DrawRectangleRounded({helpMenuX, helpMenuY, helpMenuWidth, helpMenuHeight}, helpMenuRoundness, helpMenuCornerSegments, helpMenuColor);
+    DrawText(helpMenuText.c_str(), helpMenuTextX, helpMenuTextY, helpMenuFontSize, helpMenuTextColor);
+}
+
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(windowWidth, windowHeight, "Etch-A-Sketch");
@@ -128,6 +137,12 @@ int main() {
     const unsigned int saveMessageWidth = MeasureText(saveMessage.c_str(), saveMessageFontSize);
     const unsigned int saveMessageX = canvasX + canvasWidth / 2 - saveMessageWidth / 2;
     constexpr unsigned int saveMessageY = canvasY + canvasHeight / 2 - saveMessageFontSize / 2;
+
+    bool showHelpMenu = false;
+    // calculate help menu text constants after window is loaded
+    const unsigned int helpMenuTextWidth = MeasureText(helpMenuText.c_str(), helpMenuFontSize);
+    const unsigned int helpMenuTextX = helpMenuX + helpMenuWidth / 2 - helpMenuTextWidth / 2;
+    const unsigned int helpMenuTextY = helpMenuY + helpMenuHeight / 2 - helpMenuFontSize * helpMenuTextLines / 2;
 
     while (!WindowShouldClose()) {
         const float dt = GetFrameTime();
@@ -203,6 +218,10 @@ int main() {
             }
         }
 
+        if (IsKeyPressed(key_help)) {
+            showHelpMenu = !showHelpMenu;
+        }
+
         BeginDrawing();
 
         ClearBackground(backgroundColor);
@@ -216,6 +235,8 @@ int main() {
         if (saveNoticeTimer > 0.0f) {
             DrawSaveNotice(saveMessageX, saveMessageY, saveNoticeProgress);
         }
+
+        DrawHelpMenu(showHelpMenu, helpMenuTextX, helpMenuTextY);
 
         EndDrawing();
     }
