@@ -176,8 +176,7 @@ int main() {
         }
 
         if (isControlKeyDown && IsKeyPressed(key_save_withControlDown) && !screenshotSave.valid()) {
-            const std::string screenshotPath =
-                screenshotFolder + '/' + screenshotName + std::to_string(screenshotNumber++) + ".png";
+            const std::string screenshotPath = screenshotFolder + '/' + screenshotName + std::to_string(screenshotNumber++) + ".png";
             Image screenshot = LoadImageFromScreen();
             if (screenshot.data == nullptr) {
                 TraceLog(LOG_WARNING, "Screenshot could not be captured.");
