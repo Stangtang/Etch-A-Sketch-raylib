@@ -111,7 +111,7 @@ int main() {
     RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
     ClearCanvas(canvas);
 
-    Vector2 knobRotations{0.0f, 0.0f};
+    Vector2 knobRotations{horizontalKnobStartingRotation, verticalKnobStartingRotation};
 
     float erasureShakeTimer = 0.0f;
     float erasureProgress = 0.0f;

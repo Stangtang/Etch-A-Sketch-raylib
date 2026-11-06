@@ -36,6 +36,8 @@ constexpr Color stylusColor = DARKGRAY;
 constexpr Color lineColor = BLACK;
 
 // knob
+constexpr float horizontalKnobStartingRotation = -PI / 2.0f;
+constexpr float verticalKnobStartingRotation = -PI / 2.0f;
 constexpr unsigned int knobBottomPadding = (windowHeight - canvasHeight - canvasY) / 2;
 constexpr unsigned int knobLeftRightPadding = 265;
 constexpr unsigned int knobY = windowHeight - knobBottomPadding;
